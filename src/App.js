@@ -1,22 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import StarRating from "./StarRating";
+import { useLocalStorageHook } from "./useLocalStorageHook";
 import { useMovieState } from "./useMovieState";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
-  const KEY = "ac84841c";
+const KEY = "ac84841c";
 export default function App() {
   const [query, setQuery] = useState("");
-  const { movies, isLoading, error } = useMovieState(query,handleCloseMovie);
+  const { movies, isLoading, error } = useMovieState(query, handleCloseMovie);
   const [selectId, setSelectId] = useState(null);
 
-  // const [watched, setWatched] = useState([]);
-  //This effect only intially renders
-  const [watched, setWatched] = useState(function () {
-    const storedvalue = localStorage.getItem("watched");
-    return JSON.parse(storedvalue);
-  });
+const[watched,setWatched]=useLocalStorageHook([],"watched");
   /*
   useEffect(function(){
     console.log("After intital render")
@@ -53,12 +49,7 @@ export default function App() {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
 
-  useEffect(
-    function () {
-      localStorage.setItem("watched", JSON.stringify(watched));
-    },
-    [watched]
-  );
+ 
 
   return (
     //here we used component composition instead of passing as props to children components use component inside the component
@@ -288,7 +279,6 @@ function MovieDetails({ selectId, onCloseMovie, onAddWatched, watched }) {
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
       countRatingDecission: countRef.current,
-    
     };
     onAddWatched(newWatchedMovie);
 
