@@ -8,7 +8,7 @@ const average = (arr) =>
   const KEY = "ac84841c";
 export default function App() {
   const [query, setQuery] = useState("");
-  const { movies, isLoading, error } = useMovieState(query);
+  const { movies, isLoading, error } = useMovieState(query,handleCloseMovie);
   const [selectId, setSelectId] = useState(null);
 
   // const [watched, setWatched] = useState([]);
@@ -288,7 +288,7 @@ function MovieDetails({ selectId, onCloseMovie, onAddWatched, watched }) {
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
       countRatingDecission: countRef.current,
-      count,
+    
     };
     onAddWatched(newWatchedMovie);
 
